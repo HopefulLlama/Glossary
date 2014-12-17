@@ -1,0 +1,7 @@
+{
+  "cards": [
+    {"title": "GGP", "desc": "GeoGraphic Processor. Name of the company.", "tags": ["GGP"]},
+    {"title": "SPA", "desc": "Scottish Police Authority. A distinct project consisting of nGZ, eNGZ, ClearCore and STORM.", "tags": ["SPA, nGZ, eNGZ, ClearCore, STORM"]},
+    {"title": "BUCKS", "desc": "Buckinghamshire. A distinct project consisting of nGZ and has a specific interest in AddressBase.", "tags": ["BUCKS, nGZ, AddressBase"]}
+  ]
+}

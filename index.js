@@ -28,6 +28,9 @@ app.get('/', function (req, res) {
 
 winston.info('WebSocketServer wss created');
 
+var fs = require('fs');
+var cards = JSON.parse(fs.readFileSync('./cards.json', 'utf8'));
+
 var wss = new WebSocketServer({server: server});
 wss.broadcast = function(data) {
   for(var i in this.clients) {
@@ -48,8 +51,10 @@ wss.on('connection', function(ws) {
     clients.splice(clients.indexOf(ws), 1);
     winston.info({connections: clients.length});
   });
+  ws.send(JSON.stringify(cards));
   clients.push(ws);
   winston.info({connections: clients.length});
+
 });
 
 server.listen(port, function() {
@@ -63,5 +68,7 @@ server.listen(port, function() {
   exec('npm list --depth=0', function(error, stdout, stderr){ 
     winston.info({dependencies: stdout});
   });
+  winston.info(cards);
+
   winston.info({appStatus: "running", port: port, pid: process.pid});
 });

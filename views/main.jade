@@ -26,7 +26,7 @@ html
       maximum-scale=1,
       user-scalable=no)
 
-  body(data-ng-app="")
+  body(data-ng-app="cardApp", data-ng-controller="cardController")
     nav(class="navbar navbar-default", role="navigation")
       .container
         .navbar-header
@@ -38,18 +38,9 @@ html
     .container
       #cardField
         .row
-          .col-md-4
+          div(class='col-md-4', data-ng-repeat="card in parsedJSON.cards")
             .panel.panel-default 
-              .panel-heading cardTitle
-              .panel-body cardInfo
-              .panel-footer cardTags
-          .col-md-4
-            .panel.panel-default 
-              .panel-heading cardTitle
-              .panel-body cardInfo
-              .panel-footer cardTags
-          .col-md-4
-            .panel.panel-default 
-              .panel-heading cardTitle
-              .panel-body cardInfo
-              .panel-footer cardTags
+              .panel-heading {{card.title}}
+              .panel-body {{card.desc}}
+              .panel-footer 
+                span(class="label label-primary", data-ng-repeat="tag in card.tags") {{tag}}

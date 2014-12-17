@@ -7,3 +7,6 @@ body{
 .textbox{
 	margin: 0 15px;
 }
+.label{
+	margin: 0 2px;
+}

@@ -2,3 +2,4 @@ node_modules
 log/*.log
 doc
 *.log
+card.json

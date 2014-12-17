@@ -1,0 +1,41 @@
+{
+  "name": "Glossary",
+  "version": "0.0.1",
+  "description": "Allows you to maintain a custom glossary.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "*",
+    "http": "*",
+    "ws": "*",
+    "cookie-parser": "*",
+    "express-session": "*",
+    "jade": "*",
+    "nodeunit": "*",
+    "jsdoc": "*",
+    "winston": "*",
+    "grunt": "*",
+    "grunt-cli": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-cssmin": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-nodeunit": "*",
+    "grunt-jsdoc": "*"
+  },
+  "engines": {
+    "node": "*",
+    "npm": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HopefulLlama/Glossary.git"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "debug": true
+}

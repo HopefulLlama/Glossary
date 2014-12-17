@@ -1,0 +1,55 @@
+doctype
+html
+  head
+    title #{title}
+    script(type='text/javascript', src='./lib/jquery-2.1.1.min.js')
+    script(type='text/javascript', src='./lib/bootstrap-3.3.0-dist/js/bootstrap.min.js')
+    script(type='text/javascript', src='./lib/angular.min.js')
+
+    link(rel='stylesheet', href='./lib/bootstrap-3.3.0-dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='./lib/bootstrap-3.3.0-dist/css/bootstrap-theme.min.css')
+
+    if debug
+      script(type='text/javascript', src='./src/js/ui-handler.js')
+      link(rel='stylesheet', href='./src/css/style.css')
+    else 
+      script(type='text/javascript', src='./dist/js/output.min.js')    
+      link(rel='stylesheet', href='./dist/css/output.min.css')
+
+    link(rel='icon'
+      type='image/png'
+      href='./assets/img/favicon.crush.png')
+
+    meta(name='viewport'
+      content="width=device-width"
+      initial-scale=1
+      maximum-scale=1,
+      user-scalable=no)
+
+  body(data-ng-app="")
+    nav(class="navbar navbar-default", role="navigation")
+      .container
+        .navbar-header
+          a(class="navbar-brand", href="#") #{title}
+        form(class="navbar-form navbar-left")
+          .form-group
+            input(id="filter", class="textbox", type="text", placeholder="Filter...") 
+          button(id='addCard', class='btn btn-primary', type='button', data-ng-click='addCard()') Add Card
+    .container
+      #cardField
+        .row
+          .col-md-4
+            .panel.panel-default 
+              .panel-heading cardTitle
+              .panel-body cardInfo
+              .panel-footer cardTags
+          .col-md-4
+            .panel.panel-default 
+              .panel-heading cardTitle
+              .panel-body cardInfo
+              .panel-footer cardTags
+          .col-md-4
+            .panel.panel-default 
+              .panel-heading cardTitle
+              .panel-body cardInfo
+              .panel-footer cardTags

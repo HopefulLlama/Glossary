@@ -3,40 +3,7 @@ html{
 }
 body{
 	height: 100%;
-	padding-top: 15px;
-	padding-bottom: 70px;
 }
-
-#main-content{
-	height: 100%;
-}
-
-#output{
-	height: 100%;
-	border: solid 1px gray;
-	overflow: auto;
-}
-
-.input-text{
-	color: blue;
-	font-family: "Times New Roman", Times, serif;
-}
-
-.output-text{
-	color: black;
-	font-family: "Arial", Arial, sans-serif;
-}
-
-
-.form-control{
-	color: black;
-	font-family: "Times New Roman", Times, serif;
-}
-
-#input-form{
-	margin-bottom: 15px;
-}
-
-#send{
-	width: 100%;
+.textbox{
+	margin: 0 15px;
 }

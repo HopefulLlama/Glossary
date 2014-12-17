@@ -1,0 +1,15 @@
+[submodule "public/portfolio/BingoGen"]
+	path = public/portfolio/BingoGen
+	url = https://github.com/HopefulLlama/BingoGen.git
+[submodule "public/portfolio/GameOfLife"]
+	path = public/portfolio/GameOfLife
+	url = https://github.com/HopefulLlama/Game-of-Life.git
+[submodule "public/portfolio/Fibonacci-er"]
+	path = public/portfolio/Fibonacci-er
+	url = https://github.com/HopefulLlama/Fibonacci-er.git
+[submodule "public/portfolio/PastelPointer"]
+	path = public/portfolio/PastelPointer
+	url = https://github.com/HopefulLlama/Pastel-Pointer.git
+[submodule "public/portfolio/Bootstrap-Booklet"]
+	path = public/portfolio/Bootstrap-Booklet
+	url = https://github.com/HopefulLlama/Bootstrap-Booklet.git

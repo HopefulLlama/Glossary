@@ -27,6 +27,29 @@ html
       user-scalable=no)
 
   body(data-ng-app="cardApp", data-ng-controller="cardController")
+    div(class="modal fade add-card-modal", tabindex="-1", role="dialog", aria-labelledby="add-card-modal", aria-hidden="true")
+      .modal-dialog.modal-sm
+        .modal-content
+          .modal-header
+            button(type="button", class="close", data-dismiss="modal")
+              span(aria-hidden="true") &times;
+              span(class="sr-only") Close
+            h4(class="modal-title", id="card-modal-label") New Card Details
+          .modal-body
+            form(role="form")
+              .form-group
+                label(for="input-card-title") Title
+                  input(type="text", class="form-control", id="input-card-title", placeholder="Title...")
+              .form-group
+                label(for="input-card-description") Description
+                  textarea(class="form-control", id="input-card-description", placeholder="Description...")
+              .form-group
+                label(for="input-card-tags") Tags
+                  input(type="text", class="form-control", id="input-card-tags", placeholder="Tag1, Tag2, TagN, Tag...")
+          .modal-footer
+            button(type="button", class="btn btn-default", data-dismiss="modal") Close
+            button(type="button", class="btn btn-primary", data-ng-click="addCard()") Add Card
+
     nav(class="navbar navbar-default", role="navigation")
       .container
         .navbar-header
@@ -34,11 +57,11 @@ html
         form(class="navbar-form navbar-left")
           .form-group
             input(id="filter", class="textbox", type="text", placeholder="Filter...") 
-          button(id='addCard', class='btn btn-primary', type='button', data-ng-click='addCard()') Add Card
+          button(id='addCard', class='btn btn-primary', type='button', data-toggle="modal", data-target=".add-card-modal") Add Card
     .container
       #cardField
         .row
-          div(class='col-md-4', data-ng-repeat="card in parsedJSON.cards")
+          div(class='col-xs-6 col-md-4', data-ng-repeat="card in parsedJSON.cards")
             .panel.panel-default 
               .panel-heading {{card.title}}
               .panel-body {{card.desc}}

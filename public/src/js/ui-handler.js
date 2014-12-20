@@ -1,5 +1,11 @@
 var app = angular.module('cardApp', []).controller('cardController', ['$scope', '$http', cardController]); 
 var ws; 
+function sendData(data){
+  data.cards.forEach(function(card){
+    delete card.$$hashKey;
+  });
+  ws.send(JSON.stringify(data));  
+}
 
 function cardController($scope) {
   $scope.parsedJSON = {};
@@ -9,23 +15,14 @@ function cardController($scope) {
     var newCard = {"title": $scope.title, "desc": $scope.description, "tags": tags};
     $scope.parsedJSON.cards.push(newCard);
 
-    var dataToSend = $scope.parsedJSON;
-    dataToSend.cards.forEach(function(card){
-      delete card.$$hashKey;
-    });
-    ws.send(JSON.stringify(dataToSend));
-  };
+    sendData($scope.parsedJSON);  };
 
   $scope.removeCard = function(card) { 
     var index = $scope.parsedJSON.cards.indexOf(card);
     $scope.parsedJSON.cards.splice(index, 1);
     angular.element('[data-ng-controller=cardController').scope().$apply();
 
-    var dataToSend = $scope.parsedJSON;
-    dataToSend.cards.forEach(function(card){
-      delete card.$$hashKey;
-    });
-    ws.send(JSON.stringify(dataToSend));
+    sendData($scope.parsedJSON);
   };
 }
 
@@ -41,7 +38,6 @@ $(window).load(function(event) {
   };
   
   ws.onclose = function(e) {
-
   };
 });
 

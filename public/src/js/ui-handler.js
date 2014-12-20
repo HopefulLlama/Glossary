@@ -28,6 +28,8 @@ function cardController($scope) {
 
 /** @module UI Handler */
 $(window).load(function(event) {
+  $('#disconnection-image').hide();
+
   var host = location.origin.replace(/^http/, 'ws');
   ws = new WebSocket(host);
   
@@ -38,6 +40,12 @@ $(window).load(function(event) {
   };
   
   ws.onclose = function(e) {
+    $("#add-card-button").attr('disabled', 'disabled');
+    $('.remove-card').attr('disabled', 'disabled');
+    $('#connection-text').html('Disconnected');
+    
+    $('#connection-image').hide();
+    $('#disconnection-image').show();
   };
 });
 

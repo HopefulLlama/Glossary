@@ -56,12 +56,12 @@ html
           a(class="navbar-brand", href="#") #{title}
         form(class="navbar-form navbar-left")
           .form-group
-            input(id="filter", class="textbox", type="text", placeholder="Filter...") 
+            input(id="filter", class="textbox", type="text", placeholder="Filter...", ng-model="filterCriteria") 
           button(class='btn btn-primary', type='button', data-toggle="modal", data-target=".add-card-modal") Add Card
     .container
       #cardField
         .row
-          div(class='col-xs-6 col-md-4', data-ng-repeat="card in parsedJSON.cards")
+          div(class='col-xs-6 col-md-4', data-ng-repeat="card in parsedJSON.cards | filter: filterCriteria")
             .panel.panel-default 
               .panel-heading {{card.title}}
               .panel-body {{card.desc}}

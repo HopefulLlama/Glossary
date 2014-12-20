@@ -45,7 +45,7 @@ wss.broadcast = function(data, ws) {
       this.clients[i].send(data);
     }
   }
-}
+};
 
 wss.on('connection', function(ws) {
   ws.session = {};

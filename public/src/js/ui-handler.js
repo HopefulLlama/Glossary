@@ -15,6 +15,18 @@ function cardController($scope) {
     });
     ws.send(JSON.stringify(dataToSend));
   };
+
+  $scope.removeCard = function(card) { 
+    var index = $scope.parsedJSON.cards.indexOf(card);
+    $scope.parsedJSON.cards.splice(index, 1);
+    angular.element('[data-ng-controller=cardController').scope().$apply();
+
+    var dataToSend = $scope.parsedJSON;
+    dataToSend.cards.forEach(function(card){
+      delete card.$$hashKey;
+    });
+    ws.send(JSON.stringify(dataToSend));
+  };
 }
 
 /** @module UI Handler */

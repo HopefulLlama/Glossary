@@ -61,9 +61,12 @@ html
     .container
       #cardField
         .row
-          div(class='col-xs-6 col-md-4', data-ng-repeat="card in parsedJSON.cards | filter: filterCriteria")
+          div(class='col-xs-12 col-sm-6 col-md-4', data-ng-repeat="card in parsedJSON.cards | filter: filterCriteria")
             .panel.panel-default 
               .panel-heading {{card.title}}
+                button(type="button", class="close", data-ng-click="removeCard(card)")
+                  span(aria-hidden="true") &times;
+                  span(class="sr-only") Close
               .panel-body {{card.desc}}
               .panel-footer 
                 span(class="label label-primary", data-ng-repeat="tag in card.tags track by $index") {{tag}}

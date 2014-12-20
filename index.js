@@ -44,6 +44,7 @@ wss.on('connection', function(ws) {
   winston.info("New client.", {sessionId: ws.session.id});
 
   ws.on('message', function(data) {
+    
   });
 
   ws.on('close', function close() {

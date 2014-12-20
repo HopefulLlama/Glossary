@@ -39,13 +39,13 @@ html
             form(role="form")
               .form-group
                 label(for="input-card-title") Title
-                  input(type="text", class="form-control", id="input-card-title", placeholder="Title...")
+                  input(type="text", class="form-control", id="input-card-title", placeholder="Title...", data-ng-model="title")
               .form-group
                 label(for="input-card-description") Description
-                  textarea(class="form-control", id="input-card-description", placeholder="Description...")
+                  textarea(class="form-control", id="input-card-description", placeholder="Description...", data-ng-model="description")
               .form-group
                 label(for="input-card-tags") Tags
-                  input(type="text", class="form-control", id="input-card-tags", placeholder="Tag1, Tag2, TagN, Tag...")
+                  input(type="text", class="form-control", id="input-card-tags", placeholder="Tag1, Tag2, TagN, Tag...", data-ng-model="tags")
           .modal-footer
             button(type="button", class="btn btn-default", data-dismiss="modal") Close
             button(type="button", class="btn btn-primary", data-ng-click="addCard()") Add Card
@@ -57,7 +57,7 @@ html
         form(class="navbar-form navbar-left")
           .form-group
             input(id="filter", class="textbox", type="text", placeholder="Filter...") 
-          button(id='addCard', class='btn btn-primary', type='button', data-toggle="modal", data-target=".add-card-modal") Add Card
+          button(class='btn btn-primary', type='button', data-toggle="modal", data-target=".add-card-modal") Add Card
     .container
       #cardField
         .row

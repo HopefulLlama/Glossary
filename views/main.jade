@@ -66,4 +66,4 @@ html
               .panel-heading {{card.title}}
               .panel-body {{card.desc}}
               .panel-footer 
-                span(class="label label-primary", data-ng-repeat="tag in card.tags") {{tag}}
+                span(class="label label-primary", data-ng-repeat="tag in card.tags track by $index") {{tag}}

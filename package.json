@@ -37,5 +37,6 @@
     "heroku",
     "express"
   ],
-  "debug": true
+  "debug": true,
+  "dataFile": "cards.json"
 }

@@ -29,7 +29,8 @@ app.get('/', function (req, res) {
 winston.info('WebSocketServer wss created');
 
 var fs = require('fs');
-var cards = JSON.parse(fs.readFileSync('./cards.json', 'utf8'));
+var dataFile = pkg.dataFile;
+var cards = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
 
 var wss = new WebSocketServer({server: server});
 wss.broadcast = function(data) {
@@ -44,7 +45,14 @@ wss.on('connection', function(ws) {
   winston.info("New client.", {sessionId: ws.session.id});
 
   ws.on('message', function(data) {
-    
+    winston.info(data);
+    fs.writeFile(dataFile, data, function(err) {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log("JSON saved to " + dataFile);
+    }
+}); 
   });
 
   ws.on('close', function close() {

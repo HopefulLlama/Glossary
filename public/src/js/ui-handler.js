@@ -2,21 +2,19 @@ var app = angular.module('cardApp', []).controller('cardController', cardControl
 var ws; 
 
 function cardController($scope) {
-  $scope.parsedJSON = {
-    "cards": [
-      {"title": "GGP", "desc": "GeoGraphic Processor. Name of the company.", "tags": ["GGP"]}
-    ]
-  };
+  $scope.parsedJSON = {};
 
   $scope.addCard = function() {
     var tags = $scope.tags.split(',');
     var newCard = {"title": $scope.title, "desc": $scope.description, "tags": tags};
     $scope.parsedJSON.cards.push(newCard);
 
-    ws.send(JSON.stringify($scope.parsedJSON));
-
-    $('#modal').modal('hide');
-  }
+    var dataToSend = $scope.parsedJSON;
+    dataToSend.cards.forEach(function(card){
+      delete card.$$hashKey;
+    });
+    ws.send(JSON.stringify(dataToSend));
+  };
 }
 
 /** @module UI Handler */

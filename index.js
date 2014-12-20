@@ -39,6 +39,14 @@ wss.broadcast = function(data) {
   }
 };
 
+wss.broadcast = function(data, ws) {
+  for (var i in this.clients) {
+    if (this.clients[i] !== ws) {
+      this.clients[i].send(data);
+    }
+  }
+}
+
 wss.on('connection', function(ws) {
   ws.session = {};
   ws.session.id = ws._socket.remoteAddress;
@@ -46,12 +54,15 @@ wss.on('connection', function(ws) {
 
   ws.on('message', function(data) {
     winston.info(data);
+    cards = JSON.parse(data);
     fs.writeFile(dataFile, data, function(err) {
     if(err) {
       console.log(err);
     } else {
       console.log("JSON saved to " + dataFile);
     }
+
+    wss.broadcast(data, ws);
 }); 
   });
 

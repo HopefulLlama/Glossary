@@ -1,4 +1,4 @@
-var app = angular.module('cardApp', []).controller('cardController', cardController); 
+var app = angular.module('cardApp', []).controller('cardController', ['$scope', '$http', cardController]); 
 var ws; 
 
 function cardController($scope) {

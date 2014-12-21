@@ -1,5 +1,7 @@
 var app = angular.module('cardApp', []).controller('cardController', ['$scope', '$http', cardController]); 
 var ws; 
+var host = location.origin.replace(/^http/, 'ws');
+
 function sendData(data){
   data.cards.forEach(function(card){
     delete card.$$hashKey;
@@ -26,13 +28,23 @@ function cardController($scope) {
   };
 }
 
-/** @module UI Handler */
-$(window).load(function(event) {
-  $('#disconnection-image').hide();
-
-  var host = location.origin.replace(/^http/, 'ws');
+function createWebSocket() {
+  console.log("Attempting to connect...");
   ws = new WebSocket(host);
-  
+  this.timeoutId = null;
+
+  ws.onopen = function(e){
+    console.log("Connected");
+    clearTimeout(this.timeoutId);
+
+    $("#add-card-button").removeAttr('disabled');
+    $('.remove-card').removeAttr('disabled');
+    $('#connection-text').html('Connected');
+    
+    $('#connection-image').show();
+    $('#disconnection-image').hide();
+  };
+
   ws.onmessage = function(e) {
     var message = JSON.parse(e.data);
     angular.element('[data-ng-controller=cardController]').scope().parsedJSON = message;
@@ -46,7 +58,18 @@ $(window).load(function(event) {
     
     $('#connection-image').hide();
     $('#disconnection-image').show();
+
+    this.timeoutId = setTimeout(function () {
+        // Connection has closed so try to reconnect every 10 seconds.
+        createWebSocket(); 
+    }, 10*1000);
   };
+}
+
+/** @module UI Handler */
+$(window).load(function(event) {
+  $('#disconnection-image').hide();
+  createWebSocket();  
 });
 
 $(window).on('beforeunload', function() {

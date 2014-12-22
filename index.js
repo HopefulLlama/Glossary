@@ -2,15 +2,18 @@ var http = require('http');
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
+var fs = require('fs');
+var winston = require('winston');
 
 var pkg = require('./package');
-var winston = require('winston');
+var route = pkg.route;
+var port = pkg.port;
+var dataFile = pkg.dataFile;
 
 var exec = require('child_process').exec;
 var WebSocketServer = require('ws').Server;
 
 var clients = [];
-var port = process.env.PORT || 5000;
 
 var app = express();
 var server = http.createServer(app);
@@ -22,14 +25,12 @@ app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
 
 app.set('port', (port));
-app.get('/', function (req, res) {
+app.get(route, function (req, res) {
   res.render('main', {title: pkg.name, debug: pkg.debug});
 });
 
 winston.info('WebSocketServer wss created');
 
-var fs = require('fs');
-var dataFile = pkg.dataFile;
 var cards = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
 
 var wss = new WebSocketServer({server: server});

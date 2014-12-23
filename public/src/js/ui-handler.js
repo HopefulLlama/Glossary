@@ -49,6 +49,12 @@ function createWebSocket() {
     var message = JSON.parse(e.data);
     angular.element('[data-ng-controller=cardController]').scope().parsedJSON = message;
     angular.element('[data-ng-controller=cardController]').scope().$apply();
+
+    var container = document.querySelector('#masonry-container');
+    var msnry = new Masonry( container, {
+      // options
+      itemSelector: '.masonry-element'
+    });
   };
   
   ws.onclose = function(e) {

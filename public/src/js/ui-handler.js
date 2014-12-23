@@ -2,11 +2,15 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
 var ws; 
 var host = location.origin.replace(/^http/, 'ws');
 
+var masonry;
+
 function sendData(data){
   data.cards.forEach(function(card){
     delete card.$$hashKey;
   });
   ws.send(JSON.stringify(data));  
+  masonry.reloadItems();
+  masonry.layout();
 }
 
 function cardController($scope) {
@@ -16,8 +20,10 @@ function cardController($scope) {
     var tags = $scope.tags.split(',');
     var newCard = {"title": $scope.title, "desc": $scope.description, "tags": tags};
     $scope.parsedJSON.cards.push(newCard);
+    angular.element('[data-ng-controller=cardController').scope().$apply();
 
-    sendData($scope.parsedJSON);  };
+    sendData($scope.parsedJSON);  
+  };
 
   $scope.removeCard = function(card) { 
     var index = $scope.parsedJSON.cards.indexOf(card);
@@ -51,10 +57,13 @@ function createWebSocket() {
     angular.element('[data-ng-controller=cardController]').scope().$apply();
 
     var container = document.querySelector('#masonry-container');
-    var msnry = new Masonry( container, {
+    masonry = new Masonry( container, {
       // options
       itemSelector: '.masonry-element'
     });
+
+    masonry.reloadItems();
+    masonry.layout();
   };
   
   ws.onclose = function(e) {

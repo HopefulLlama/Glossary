@@ -22,7 +22,11 @@ function cardController($scope) {
     $scope.parsedJSON.cards.push(newCard);
     angular.element('[data-ng-controller=cardController').scope().$apply();
 
-    sendData($scope.parsedJSON);  
+    sendData($scope.parsedJSON);
+
+    $scope.title = "";
+    $scope.description = "";
+    $scope.tags = "";
   };
 
   $scope.removeCard = function(card) { 

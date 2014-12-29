@@ -40,5 +40,8 @@
   "debug": false,
   "route": "/",
   "port": "5000",
-  "dataFile": "cards.json"
+  "dataFile": "cards.json",
+  "devDependencies": {
+    "grunt": "^0.4.5"
+  }
 }

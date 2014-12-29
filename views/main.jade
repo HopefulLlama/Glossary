@@ -65,7 +65,7 @@ html
           span(id="connection-text") Connected
     .container
         div(class="row masonry", id="masonry-container")
-          div(class='masonry-element col-xs-12 col-sm-6 col-md-4', data-ng-repeat="card in parsedJSON.cards | filter: filterCriteria")
+          div(class='masonry-element col-xs-12 col-sm-6 col-md-4', data-ng-repeat="card in parsedJSON.cards | filter: filterCriteria | orderBy:['title']")
             .panel.panel-default 
               .panel-heading {{card.title}}
                 button(type="button", class="remove-card close", data-ng-click="removeCard(card)")

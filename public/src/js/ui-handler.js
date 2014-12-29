@@ -33,6 +33,8 @@ function cardController($scope) {
       angular.element('[data-ng-controller=cardController').scope().$apply();
 
       sendData($scope.parsedJSON);
+
+      $('#add-card-modal').modal('hide');
     }
 
     $scope.title = "";

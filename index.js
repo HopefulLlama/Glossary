@@ -34,12 +34,6 @@ winston.info('WebSocketServer wss created');
 var cards = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
 
 var wss = new WebSocketServer({server: server});
-wss.broadcast = function(data) {
-  for(var i in this.clients) {
-    this.clients[i].send(data);
-  }
-};
-
 wss.broadcast = function(data, ws) {
   for (var i in this.clients) {
     if (this.clients[i] !== ws) {
@@ -57,14 +51,14 @@ wss.on('connection', function(ws) {
     winston.info(data);
     cards = JSON.parse(data);
     fs.writeFile(dataFile, data, function(err) {
-    if(err) {
-      console.log(err);
-    } else {
-      console.log("JSON saved to " + dataFile);
-    }
+      if(err) {
+        console.log(err);
+      } else {
+        console.log("JSON saved to " + dataFile);
+      }
 
-    wss.broadcast(data, ws);
-}); 
+      wss.broadcast(data, ws);
+    }); 
   });
 
   ws.on('close', function close() {

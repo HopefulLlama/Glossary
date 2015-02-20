@@ -8,7 +8,7 @@ function createWebSocket() {
     console.log("Connected");
     clearTimeout(this.timeoutId);
 
-    updateConnectedUI();
+    ui.updateConnectedUI();
   };
 
   webSocket.onmessage = function(e) {
@@ -17,18 +17,18 @@ function createWebSocket() {
     angular.element('[data-ng-controller=cardController]').scope().$apply();
 
     var container = document.querySelector('#masonry-container');
-    masonry = new Masonry( container, {
+    ui.masonry = new Masonry( container, {
       // options
       itemSelector: '.masonry-element'
     });
 
-    masonry.reloadItems();
-    masonry.layout();
+    ui.masonry.reloadItems();
+    ui.masonry.layout();
   };
   
   webSocket.onclose = function(e) {
-    updateDisconnectedUI();
-    
+    ui.updateDisconnectedUI();
+
     this.timeoutId = setTimeout(function () {
         // Connection has closed so try to reconnect every 10 seconds.
         createWebSocket(); 

@@ -13,7 +13,7 @@ function sendData(data){
 
 /** @module UI Handler */
 $(window).load(function(event) {
-  updateConnectedUI();
+  ui.updateConnectedUI();
   createWebSocket();  
 });
 

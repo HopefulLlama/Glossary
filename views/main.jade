@@ -61,7 +61,7 @@ html
         form(class="navbar-form navbar-left")
           .form-group
             input(id="filter", class="textbox", type="text", placeholder="Filter...", data-ng-model="filterCriteria", value="") 
-          button(class='btn btn-primary', type='button', data-toggle="modal", data-target=".add-card-modal") Add Card
+            button(class='btn btn-primary', type='button', data-toggle="modal", data-target=".add-card-modal") Add Card
         form(class="navbar-form navbar-right")
           img(id="connection-image", src="./assets/img/connected.png")
           img(id="disconnection-image", src="./assets/img/disconnected.png")
@@ -69,11 +69,4 @@ html
     .container
         div(class="row masonry", id="masonry-container")
           div(class='masonry-element col-xs-12 col-sm-6 col-md-4', data-ng-repeat="card in parsedJSON.cards | filter: filterCriteria | orderBy:['title']")
-            .panel.panel-default 
-              .panel-heading {{card.title}}
-                button(type="button", class="remove-card close", data-ng-click="removeCard(card)")
-                  span(aria-hidden="true") &times;
-                  span(class="sr-only") Close
-              .panel-body {{card.desc}}
-              .panel-footer 
-                span(class="label label-primary", data-ng-repeat="tag in card.tags track by $index") {{tag}}
+            card

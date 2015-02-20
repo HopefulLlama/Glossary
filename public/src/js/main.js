@@ -1,11 +1,11 @@
-var app = angular.module('cardApp', []).controller('cardController', ['$scope', '$http', cardController]); 
-
+var webSocket; 
+var host = location.origin.replace(/^http/, 'ws');
 
 function sendData(data){
   data.cards.forEach(function(card){
     delete card.$$hashKey;
   });
-  ws.send(JSON.stringify(data));  
+  webSocket.send(JSON.stringify(data));  
   masonry.reloadItems();
   masonry.layout();
 }
@@ -13,10 +13,10 @@ function sendData(data){
 
 /** @module UI Handler */
 $(window).load(function(event) {
-  $('#disconnection-image').hide();
+  updateConnectedUI();
   createWebSocket();  
 });
 
 $(window).on('beforeunload', function() {
-  ws.close();
+  webSocket.close();
 });

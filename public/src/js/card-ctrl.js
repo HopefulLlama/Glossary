@@ -1,5 +1,5 @@
 
-function cardController($scope) {
+var app = angular.module('cardApp', []).controller('cardController', ['$scope', function($scope) {
   $scope.parsedJSON = {};
 
   $scope.addCard = function() {
@@ -35,4 +35,9 @@ function cardController($scope) {
 
     sendData($scope.parsedJSON);
   };
-}
+}]).directive('card', function() {
+  return {
+    restrict: 'E',
+    template: '<div class="panel panel-default"> <div class="panel-heading">{{card.title}}<button type="button" data-ng-click="removeCard(card)" class="remove-card close" disabled="disabled"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button></div><div class="panel-body">{{card.desc}}</div><div class="panel-footer"> <span data-ng-repeat="tag in card.tags track by $index" class="label label-primary">{{tag}}</span></div></div>'
+  };
+});

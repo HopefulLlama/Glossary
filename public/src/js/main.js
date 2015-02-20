@@ -6,8 +6,8 @@ function sendData(data){
     delete card.$$hashKey;
   });
   webSocket.send(JSON.stringify(data));  
-  masonry.reloadItems();
-  masonry.layout();
+  ui.masonry.reloadItems();
+  ui.masonry.layout();
 }
 
 

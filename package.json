@@ -37,7 +37,7 @@
     "heroku",
     "express"
   ],
-  "debug": false,
+  "debug": true,
   "route": "/",
   "port": "5000",
   "dataFile": "cards.json",

@@ -43,13 +43,13 @@ html
             form(role="form")
               .form-group
                 label(for="input-card-title") Title
-                  input(type="text", class="form-control", id="input-card-title", placeholder="Title...", data-ng-model="title")
+                  input(type="text", class="form-control", id="input-card-title", placeholder="Title...", data-ng-model="card.title")
               .form-group
                 label(for="input-card-description") Description
-                  textarea(class="form-control", id="input-card-description", placeholder="Description...", data-ng-model="description")
+                  textarea(class="form-control", id="input-card-description", placeholder="Description...", data-ng-model="card.description")
               .form-group
                 label(for="input-card-tags") Tags
-                  input(type="text", class="form-control", id="input-card-tags", placeholder="Tag1, Tag2, TagN, Tag...", data-ng-model="tags")
+                  input(type="text", class="form-control", id="input-card-tags", placeholder="Tag1, Tag2, TagN, Tag...", data-ng-model="card.tags")
           .modal-footer
             button(type="button", class="btn btn-default", data-dismiss="modal") Close
             button(id="add-card-button", type="button", class="btn btn-primary", data-ng-click="addCard()") Add Card

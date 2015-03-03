@@ -14,7 +14,7 @@ function sendData(data){
 /** @module UI Handler */
 $(window).load(function(event) {
   ui.updateConnectedUI();
-  createWebSocket();  
+  webSocket = webSocketHandler.createWebSocket();  
 });
 
 $(window).on('beforeunload', function() {

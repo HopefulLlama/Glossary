@@ -12,16 +12,15 @@ var webSocketHandler = {
     };
 
     webSocket.onmessage = function(e) {
+      // This whole mess is in need of clean up
       var message = JSON.parse(e.data);
       angular.element('[data-ng-controller=cardController]').scope().parsedJSON = message;
       angular.element('[data-ng-controller=cardController]').scope().$apply();
-
       var container = document.querySelector('#masonry-container');
       ui.masonry = new Masonry( container, {
         // options
         itemSelector: '.masonry-element'
       });
-
       ui.masonry.reloadItems();
       ui.masonry.layout();
     };

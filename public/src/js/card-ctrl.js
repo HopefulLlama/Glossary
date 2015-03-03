@@ -1,11 +1,12 @@
 
 var app = angular.module('cardApp', []).controller('cardController', ['$scope', function($scope) {
+  $scope.newCard = {};
   $scope.parsedJSON = {};
 
   $scope.addCard = function() {
     var cardExists = false;
     $scope.parsedJSON.cards.forEach(function(card) {
-      if(card.title === $scope.title){
+      if($scope.newCard.title === $scope.title){
         cardExists = true;
       }
     });
@@ -18,17 +19,17 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
         tags = $scope.tags.split(',');
       }
       
-      var newCard = {"title": $scope.title, "desc": $scope.description, "tags": tags};
-      $scope.parsedJSON.cards.push(newCard);
+      var cardToAdd = {"title": $scope.newCard.title, "desc": $scope.newCard.desc, "tags": $scope.newCard.tags};
+      $scope.parsedJSON.cards.push(cardToAdd);
 
       sendData($scope.parsedJSON);
 
       $('#add-card-modal').modal('hide');
     }
 
-    $scope.title = "";
-    $scope.description = "";
-    $scope.tags = "";
+    $scope.newCard.title = "";
+    $scope.newCard.description = "";
+    $scope.newCard.tags = "";
   };
 
   $scope.removeCard = function(card) { 

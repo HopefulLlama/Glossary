@@ -2,7 +2,7 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
   $scope.newCard = {};
   $scope.parsedJSON = {};
 
-  $scope.showCards = true
+  $scope.showCards = true;
   $scope.sorting = {};
   $scope.sorting.predicate = 'title';
   $scope.sorting.reverse = false; 
@@ -60,11 +60,13 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
   });
 
   $scope.reverseSorting = function() {
+    // Horrible kludge to get sorting working for now
     $scope.showCards = false;
+    $scope.$apply();
     $scope.sorting.reverse = !$scope.sorting.reverse;
-    console.log($scope.sorting.predicate, $scope.sorting.reverse);
     $scope.showCards = true;
-  }
+    $scope.$apply();
+  };
 
 }]).directive('card', function() {
   return {

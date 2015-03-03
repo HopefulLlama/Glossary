@@ -1,7 +1,11 @@
-
 var app = angular.module('cardApp', []).controller('cardController', ['$scope', function($scope) {
   $scope.newCard = {};
   $scope.parsedJSON = {};
+
+  $scope.showCards = true
+  $scope.sorting = {};
+  $scope.sorting.predicate = 'title';
+  $scope.sorting.reverse = false; 
 
   $scope.addCard = function() {
     var cardExists = false;
@@ -54,6 +58,13 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
   $scope.$watch('newCard.desc', function() {
     $scope.validateForm();
   });
+
+  $scope.reverseSorting = function() {
+    $scope.showCards = false;
+    $scope.sorting.reverse = !$scope.sorting.reverse;
+    console.log($scope.sorting.predicate, $scope.sorting.reverse);
+    $scope.showCards = true;
+  }
 
 }]).directive('card', function() {
   return {

@@ -30,7 +30,7 @@ html
       maximum-scale=1,
       user-scalable=no)
 
-  body(data-ng-app="cardApp", data-ng-controller="cardController" ng-init="init()")
+  body(data-ng-app="cardApp", data-ng-controller="cardController")
     div(id="add-card-modal", class="modal fade add-card-modal", tabindex="-1", role="dialog", aria-labelledby="add-card-modal", aria-hidden="true")
       .modal-dialog.modal-sm
         .modal-content
@@ -61,8 +61,6 @@ html
         form(class="navbar-form navbar-left")
           .form-group
             input(id="filter", class="textbox", type="text", placeholder="Filter...", data-ng-model="filterCriteria", value="") 
-            button(id="sort-alphabetical" type='button', class="btn btn-primary", aria-label="Sort", data-ng-click="reverseSorting()")
-              span(class="glyphicon" ng-class="{'glyphicon-sort-by-alphabet': !sorting.reverse, 'glyphicon-sort-by-alphabet-alt': sorting.reverse}" aria-hidden="true")  
             button(id="add-card-btn", class='btn btn-primary', type='button', data-toggle="modal", data-target=".add-card-modal") Add Card
         form(class="navbar-form navbar-right")
           img(id="connection-image", src="./assets/img/connected.png")
@@ -70,5 +68,5 @@ html
           span(id="connection-text") Connected
     .container
         div(class="row masonry", id="masonry-container")
-          div(data-ng-if="showCards" class='masonry-element col-xs-12 col-sm-6 col-md-4', data-ng-repeat="card in parsedJSON.cards | filter: filterCriteria | orderBy:sorting.predicate:sorting.reverse")
+          div(class='masonry-element col-xs-12 col-sm-6 col-md-4', data-ng-repeat="card in parsedJSON.cards | filter: filterCriteria | orderBy:['title']")
             card

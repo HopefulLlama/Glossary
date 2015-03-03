@@ -38,6 +38,23 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
 
     sendData($scope.parsedJSON);
   };
+
+  $scope.validateForm = function() {
+    if(typeof $scope.newCard.title === "undefined" && typeof $scope.newCard.desc === "undefined") {
+      $('#add-card-submit').attr('disabled', 'disabled');
+    } else {
+      $('#add-card-submit').removeAttr('disabled');
+    }
+  };
+
+  $scope.$watch('newCard.title', function() {
+    $scope.validateForm();
+  });
+
+  $scope.$watch('newCard.desc', function() {
+    $scope.validateForm();
+  });
+
 }]).directive('card', function() {
   return {
     restrict: 'E',

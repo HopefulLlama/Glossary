@@ -19,11 +19,11 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
       alert("Already exists. This card will not be added.");
     } else {
       var tags = [];
-      if(typeof $scope.tags !== 'undefined') {
-        tags = $scope.tags.split(',');
+      if(typeof $scope.newCard.tags !== 'undefined' || $scope.newCard.tags !== "") {
+        tags = $scope.newCard.tags.split(',');
       }
       
-      var cardToAdd = {"title": $scope.newCard.title, "desc": $scope.newCard.desc, "tags": $scope.newCard.tags};
+      var cardToAdd = {"title": $scope.newCard.title, "desc": $scope.newCard.desc, "tags": tags};
       $scope.parsedJSON.cards.push(cardToAdd);
 
       sendData($scope.parsedJSON);
@@ -44,7 +44,7 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
   };
 
   $scope.validateForm = function() {
-    if(typeof $scope.newCard.title === "undefined" || typeof $scope.newCard.desc === "undefined") {
+    if(typeof $scope.newCard.title === "undefined" || $scope.newCard.title === "" || typeof $scope.newCard.desc === "undefined" || $scope.newCard.desc === "" ) {
       $('#add-card-submit').attr('disabled', 'disabled');
     } else {
       $('#add-card-submit').removeAttr('disabled');

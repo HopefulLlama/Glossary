@@ -1,4 +1,3 @@
-
 var app = angular.module('cardApp', []).controller('cardController', ['$scope', function($scope) {
   $scope.newCard = {};
   $scope.parsedJSON = {};

@@ -1,5 +1,6 @@
 
 var app = angular.module('cardApp', []).controller('cardController', ['$scope', function($scope) {
+  $scope.newCard = {};
   $scope.parsedJSON = {};
 
   $scope.addCard = function() {
@@ -40,7 +41,7 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
   };
 
   $scope.validateForm = function() {
-    if(typeof $scope.newCard.title === "undefined" && typeof $scope.newCard.desc === "undefined") {
+    if(typeof $scope.newCard.title === "undefined" || typeof $scope.newCard.desc === "undefined") {
       $('#add-card-submit').attr('disabled', 'disabled');
     } else {
       $('#add-card-submit').removeAttr('disabled');

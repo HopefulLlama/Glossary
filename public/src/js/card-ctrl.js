@@ -4,7 +4,6 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
   $scope.parsedJSON = {};
 
   $scope.addCard = function() {
-    $scope.newCard = {};
     var cardExists = false;
     $scope.parsedJSON.cards.forEach(function(card) {
       if($scope.newCard.title === $scope.title){
@@ -29,7 +28,7 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
     }
 
     $scope.newCard.title = "";
-    $scope.newCard.description = "";
+    $scope.newCard.desc = "";
     $scope.newCard.tags = "";
   };
 

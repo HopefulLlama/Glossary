@@ -24,7 +24,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
 
-app.set('port', (port));
+app.set('port', (process.env.PORT || port));
 app.get(route, function (req, res) {
   res.render('main', {title: pkg.name, debug: pkg.debug});
 });

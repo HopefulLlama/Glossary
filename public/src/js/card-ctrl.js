@@ -19,8 +19,10 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
       alert("Already exists. This card will not be added.");
     } else {
       var tags = [];
-      if(typeof $scope.newCard.tags !== 'undefined' || $scope.newCard.tags !== "") {
-        tags = $scope.newCard.tags.split(',');
+      if(typeof $scope.newCard.tags !== 'undefined') {
+        if($scope.newCard.tags !== "") {
+          tags = $scope.newCard.tags.split(',');
+        }
       }
       
       var cardToAdd = {"title": $scope.newCard.title, "desc": $scope.newCard.desc, "tags": tags};

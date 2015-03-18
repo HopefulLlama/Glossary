@@ -7,7 +7,7 @@ var winston = require('winston');
 
 var pkg = require('./package');
 var route = pkg.route;
-var port = pkg.port;
+var port = process.env.PORT || pkg.port;
 var dataFile = pkg.dataFile;
 
 var exec = require('child_process').exec;
@@ -24,7 +24,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
 
-app.set('port', (process.env.PORT || port));
+app.set('port', (port));
 app.get(route, function (req, res) {
   res.render('main', {title: pkg.name, debug: pkg.debug});
 });

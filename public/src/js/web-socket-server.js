@@ -28,7 +28,7 @@ var webSocketHandler = {
     webSocket.onclose = function(e) {
       ui.updateDisconnectedUI();
 
-      this.timeoutId = setTimeout(function () {
+      this.timeoutId = setInterval(function () {
           // Connection has closed so try to reconnect every 10 seconds.
           createWebSocket(); 
       }, 10*1000);

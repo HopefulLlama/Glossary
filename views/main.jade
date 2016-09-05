@@ -11,10 +11,7 @@ html
     link(rel='stylesheet', href='./lib/bootstrap-3.3.0-dist/css/bootstrap-theme.min.css')
 
     if debug
-      script(type='text/javascript', src='./src/js/ui-handler.js')
-      script(type='text/javascript', src='./src/js/web-socket-server.js')
       script(type='text/javascript', src='./src/js/card-ctrl.js')
-      script(type='text/javascript', src='./src/js/main.js')
       link(rel='stylesheet', href='./src/css/style.css')
     else 
       script(type='text/javascript', src='./dist/js/output.min.js')    
@@ -31,7 +28,7 @@ html
       user-scalable=no)
 
   body(data-ng-app="cardApp", data-ng-controller="cardController")
-    div(id="add-card-modal", class="modal fade add-card-modal", tabindex="-1", role="dialog", aria-labelledby="add-card-modal", aria-hidden="true")
+    div(id="add-card-modal", class="modal fade add-card-modal", tabindex="-1", role="dialog", aria-labelledby="add-card-modal", aria-hidden="true", data-ng-disabled="WebSocketService.connected")
       .modal-dialog.modal-lg
         .modal-content
           .modal-header
@@ -65,10 +62,13 @@ html
               span(class="glyphicon" ng-class="{'glyphicon-sort-by-alphabet': !sorting.reverse, 'glyphicon-sort-by-alphabet-alt': sorting.reverse}" aria-hidden="true")  
             button(id="add-card-btn", class='btn btn-primary', type='button', data-toggle="modal", data-target=".add-card-modal") Add Card
         form(class="navbar-form navbar-right")
-          img(id="connection-image", src="./assets/img/connected.png")
-          img(id="disconnection-image", src="./assets/img/disconnected.png")
-          span(id="connection-text") Connected
+          span(data-ng-if="WebSocketService.connected") 
+            img(id="connection-image", src="./assets/img/connected.png")
+            span Connected
+          span(data-ng-if="!WebSocketService.connected") 
+            img(id="disconnection-image", src="./assets/img/disconnected.png")
+            span Disconnected
     .container
         div(class="row masonry", id="masonry-container")
           div(data-ng-if="showCards", class='masonry-element col-xs-12 col-sm-6 col-md-4', data-ng-repeat="card in parsedJSON.cards | filter: filterCriteria | orderBy:sorting.predicate:sorting.reverse")
-            card(details="card", remove-card="removeCard")
+            card(details="card", remove-card="removeCard", connected="WebSocketService.connected")

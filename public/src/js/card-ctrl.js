@@ -1,4 +1,76 @@
-var app = angular.module('cardApp', []).controller('cardController', ['$scope', function($scope) {
+angular.module('cardApp', [])
+.service('WebSocketService', ["$interval", function($interval) {
+  this.masonry = null;
+  this.host = location.origin.replace(/^http/, 'ws');
+
+  this.connected = false;
+  this.reconnectInterval = null;
+
+  this.webSocket = null;
+
+  this.createWebSocket = function() {
+    var webSocketService = this;
+
+    if(this.webSocket === null) {
+      console.log("Attempting to connect...");
+      this.webSocket = new WebSocket(webSocketService.host);
+
+      this.webSocket.onopen = function(e){
+        console.log("Connected.");
+        $interval.cancel(webSocketService.reconnectInterval);
+        webSocketService.connected = true;
+      };
+
+      this.webSocket.onmessage = function(e) {
+        // This whole mess is in need of clean up
+        var message = JSON.parse(e.data);
+        angular.element('[data-ng-controller=cardController]').scope().parsedJSON = message;
+        angular.element('[data-ng-controller=cardController]').scope().$apply();
+        var container = document.querySelector('#masonry-container');
+        webSocketService.masonry = new Masonry( container, {
+          // options
+          itemSelector: '.masonry-element'
+        });
+        webSocketService.masonry.reloadItems();
+        webSocketService.masonry.layout();
+      };
+      
+      this.webSocket.onclose = function(e) {
+        console.log("Connection closed.");
+        webSocketService.connected = false;
+        webSocketService.webSocket = null;
+
+        if(!webSocketService.reconnectInterval) {
+          webSocketService.reconnectInterval = $interval(function () {
+              // Connection has closed so try to reconnect every 10 seconds.
+              webSocketService.createWebSocket(); 
+          }, 10*1000);
+        }
+      };  
+    } else {
+      console.log("Connection already established.");
+    }
+  };
+
+  this.sendData = function(data){
+    data.cards.forEach(function(card){
+      delete card.$$hashKey;
+    });
+    this.webSocket.send(JSON.stringify(data));  
+    this.masonry.reloadItems();
+    this.masonry.layout();
+  };
+
+  this.cleanup = function() {
+    if(this.connected) {
+      this.webSocket.close();
+    } 
+    $interval.cancel(this.reconnectInterval);
+  };
+}])
+.controller('cardController', ['$scope', 'WebSocketService', function($scope, WebSocketService) {
+  $scope.WebSocketService = WebSocketService;
+
   $scope.newCard = {};
   $scope.parsedJSON = {};
 
@@ -33,7 +105,7 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
       var cardToAdd = {"title": $scope.newCard.title, "desc": $scope.newCard.desc, "tags": tags};
       $scope.parsedJSON.cards.push(cardToAdd);
 
-      sendData($scope.parsedJSON);
+      WebSocketService.sendData($scope.parsedJSON);
 
       $('#add-card-modal').modal('hide');
 
@@ -47,7 +119,7 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
     var index = $scope.parsedJSON.cards.indexOf(card);
     $scope.parsedJSON.cards.splice(index, 1);
 
-    sendData($scope.parsedJSON);
+    WebSocketService.sendData($scope.parsedJSON);
   };
 
   $scope.validateForm = function() {
@@ -63,12 +135,19 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
     $scope.$apply();
   };
 
-}]).directive('card', function() {
+  WebSocketService.createWebSocket();
+
+  $scope.$on("$destroy", function() {
+    WebSocketService.cleanUp();
+  });
+}])
+.directive('card', function() {
   return {
     restrict: 'E',
     scope: {
       details: '=',
-      removeCard: '='
+      removeCard: '=',
+      connected: '='
     },
     templateUrl: 'html/card.html'
   };

@@ -42,10 +42,10 @@ html
           .modal-body
             form(role="form")
               .form-group
-                label(for="input-card-title") Title* 
+                label(for="input-card-title") Title * 
                 input(type="text", class="form-control", id="input-card-title", placeholder="Title...", data-ng-model="newCard.title", required="required")
               .form-group
-                label(for="input-card-description") Description*
+                label(for="input-card-description") Description *
                 textarea(class="form-control", id="input-card-description", placeholder="Description...", data-ng-model="newCard.desc", required="required")
               .form-group
                 label(for="input-card-tags") Tags
@@ -70,5 +70,5 @@ html
           span(id="connection-text") Connected
     .container
         div(class="row masonry", id="masonry-container")
-          div(data-ng-if="showCards" class='masonry-element col-xs-12 col-sm-6 col-md-4', data-ng-repeat="card in parsedJSON.cards | filter: filterCriteria | orderBy:sorting.predicate:sorting.reverse")
-            card
+          div(data-ng-if="showCards", class='masonry-element col-xs-12 col-sm-6 col-md-4', data-ng-repeat="card in parsedJSON.cards | filter: filterCriteria | orderBy:sorting.predicate:sorting.reverse")
+            card(details="card", remove-card="removeCard")

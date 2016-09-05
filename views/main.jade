@@ -32,7 +32,7 @@ html
 
   body(data-ng-app="cardApp", data-ng-controller="cardController")
     div(id="add-card-modal", class="modal fade add-card-modal", tabindex="-1", role="dialog", aria-labelledby="add-card-modal", aria-hidden="true")
-      .modal-dialog.modal-sm
+      .modal-dialog.modal-lg
         .modal-content
           .modal-header
             button(type="button", class="close", data-dismiss="modal")
@@ -43,13 +43,13 @@ html
             form(role="form")
               .form-group
                 label(for="input-card-title") Title* 
-                  input(type="text", class="form-control", id="input-card-title", placeholder="Title...", data-ng-model="newCard.title", required="required")
+                input(type="text", class="form-control", id="input-card-title", placeholder="Title...", data-ng-model="newCard.title", required="required")
               .form-group
                 label(for="input-card-description") Description*
-                  textarea(class="form-control", id="input-card-description", placeholder="Description...", data-ng-model="newCard.desc", required="required")
+                textarea(class="form-control", id="input-card-description", placeholder="Description...", data-ng-model="newCard.desc", required="required")
               .form-group
                 label(for="input-card-tags") Tags
-                  input(type="text", class="form-control", id="input-card-tags", placeholder="Tag1, Tag2, TagN, Tag...", data-ng-model="newCard.tags")
+                input(type="text", class="form-control", id="input-card-tags", placeholder="Tag1, Tag2, TagN, Tag...", data-ng-model="newCard.tags")
           .modal-footer
             button(type="button", class="btn btn-default", data-dismiss="modal") Close
             button(id="add-card-submit", type="button", class="btn btn-primary", data-ng-click="addCard()") Add Card

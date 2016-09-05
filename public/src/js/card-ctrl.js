@@ -9,8 +9,12 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
 
   $scope.addCard = function() {
     var cardExists = false;
+
+    $scope.newCard.title = $scope.newCard.title.trim();
+    $scope.newCard.desc = $scope.newCard.desc.trim();
+
     $scope.parsedJSON.cards.forEach(function(card) {
-      if($scope.newCard.title === $scope.title){
+      if($scope.newCard.title.toLowerCase() === card.title.toLowerCase()) {
         cardExists = true;
       }
     });
@@ -19,10 +23,11 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
       alert("Already exists. This card will not be added.");
     } else {
       var tags = [];
-      if(typeof $scope.newCard.tags !== 'undefined') {
-        if($scope.newCard.tags !== "") {
-          tags = $scope.newCard.tags.split(',');
-        }
+      if(typeof $scope.newCard.tags !== 'undefined' && $scope.newCard.tags !== "") {
+        var temp = $scope.newCard.tags.split(',');
+        temp.forEach(function(tag) {
+          tags.push(tag.trim().toLowerCase());
+        });
       }
       
       var cardToAdd = {"title": $scope.newCard.title, "desc": $scope.newCard.desc, "tags": tags};
@@ -31,11 +36,11 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
       sendData($scope.parsedJSON);
 
       $('#add-card-modal').modal('hide');
-    }
 
-    $scope.newCard.title = "";
-    $scope.newCard.desc = "";
-    $scope.newCard.tags = "";
+      $scope.newCard.title = "";
+      $scope.newCard.desc = "";
+      $scope.newCard.tags = "";
+    }
   };
 
   $scope.removeCard = function(card) { 

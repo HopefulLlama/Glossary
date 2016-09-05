@@ -5,6 +5,7 @@ angular.module('cardApp', [])
 
   this.connected = false;
   this.reconnectInterval = null;
+  this.heartbeatInterval = null;
 
   this.webSocket = null;
 
@@ -19,20 +20,29 @@ angular.module('cardApp', [])
         console.log("Connected.");
         $interval.cancel(webSocketService.reconnectInterval);
         webSocketService.connected = true;
+
+        webSocketService.heartbeatInterval = $interval(function() {
+          webSocketService.webSocket.send(JSON.stringify({
+            code: "HB",
+            data: "ping"
+          }));
+        }, 30 * 1e3);
       };
 
       this.webSocket.onmessage = function(e) {
         // This whole mess is in need of clean up
         var message = JSON.parse(e.data);
-        angular.element('[data-ng-controller=cardController]').scope().parsedJSON = message;
-        angular.element('[data-ng-controller=cardController]').scope().$apply();
-        var container = document.querySelector('#masonry-container');
-        webSocketService.masonry = new Masonry( container, {
-          // options
-          itemSelector: '.masonry-element'
-        });
-        webSocketService.masonry.reloadItems();
-        webSocketService.masonry.layout();
+        if(message.code === "PL") {
+          angular.element('[data-ng-controller=cardController]').scope().parsedJSON = message.data;
+          angular.element('[data-ng-controller=cardController]').scope().$apply();
+          var container = document.querySelector('#masonry-container');
+          webSocketService.masonry = new Masonry( container, {
+            // options
+            itemSelector: '.masonry-element'
+          });
+          webSocketService.masonry.reloadItems();
+          webSocketService.masonry.layout();
+        }
       };
       
       this.webSocket.onclose = function(e) {
@@ -46,6 +56,8 @@ angular.module('cardApp', [])
               webSocketService.createWebSocket(); 
           }, 10*1000);
         }
+
+        $interval.cancel(webSocketService.heartbeatInterval);
       };  
     } else {
       console.log("Connection already established.");
@@ -56,7 +68,10 @@ angular.module('cardApp', [])
     data.cards.forEach(function(card){
       delete card.$$hashKey;
     });
-    this.webSocket.send(JSON.stringify(data));  
+    this.webSocket.send(JSON.stringify({
+      code: "PL",
+      data: data
+    }));  
     this.masonry.reloadItems();
     this.masonry.layout();
   };

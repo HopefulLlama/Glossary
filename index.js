@@ -37,7 +37,10 @@ var wss = new WebSocketServer({server: server});
 wss.broadcast = function(data, ws) {
   for (var i in this.clients) {
     if (this.clients[i] !== ws) {
-      this.clients[i].send(data);
+      this.clients[i].send(JSON.stringify({
+        code: "PL",
+        data: data
+      }));
     }
   }
 };
@@ -47,18 +50,26 @@ wss.on('connection', function(ws) {
   ws.session.id = ws._socket.remoteAddress;
   winston.info("New client.", {sessionId: ws.session.id});
 
-  ws.on('message', function(data) {
-    winston.info(data);
-    cards = JSON.parse(data);
-    fs.writeFile(dataFile, data, function(err) {
-      if(err) {
-        console.log(err);
-      } else {
-        console.log("JSON saved to " + dataFile);
-      }
+  ws.on('message', function(payload) {
+    winston.info(payload);
+    data = JSON.parse(payload);
+    if(data.code === "PL") {
+      var input = JSON.stringify(data.data);
+      fs.writeFile(dataFile, input, function(err) {
+        if(err) {
+          console.log(err);
+        } else {
+          console.log("JSON saved to " + dataFile);
+        }
 
-      wss.broadcast(data, ws);
-    }); 
+        wss.broadcast(data, ws);
+      }); 
+    } else if (data.code === "HB") {
+      ws.send(JSON.stringify({
+        code: "HB",
+        data: "pong"
+      }));
+    }
   });
 
   ws.on('close', function close() {
@@ -66,7 +77,10 @@ wss.on('connection', function(ws) {
     clients.splice(clients.indexOf(ws), 1);
     winston.info({connections: clients.length});
   });
-  ws.send(JSON.stringify(cards));
+  ws.send(JSON.stringify({
+    code: "PL",
+    data: JSON.parse(fs.readFileSync(dataFile, 'utf8'))
+  }));
   clients.push(ws);
   winston.info({connections: clients.length});
 

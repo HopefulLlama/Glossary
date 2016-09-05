@@ -52,7 +52,7 @@ html
                 input(type="text", class="form-control", id="input-card-tags", placeholder="Tag1, Tag2, TagN, Tag...", data-ng-model="newCard.tags")
           .modal-footer
             button(type="button", class="btn btn-default", data-dismiss="modal") Close
-            button(id="add-card-submit", type="button", class="btn btn-primary", data-ng-click="addCard()") Add Card
+            button(id="add-card-submit", type="button", class="btn btn-primary", data-ng-click="addCard()" data-ng-disabled="!validateForm()") Add Card
 
     nav(class="navbar navbar-default", role="navigation")
       .container

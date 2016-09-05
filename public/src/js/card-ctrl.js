@@ -51,20 +51,8 @@ var app = angular.module('cardApp', []).controller('cardController', ['$scope', 
   };
 
   $scope.validateForm = function() {
-    if(typeof $scope.newCard.title === "undefined" || $scope.newCard.title === "" || typeof $scope.newCard.desc === "undefined" || $scope.newCard.desc === "" ) {
-      $('#add-card-submit').attr('disabled', 'disabled');
-    } else {
-      $('#add-card-submit').removeAttr('disabled');
-    }
+    return !(typeof $scope.newCard.title === "undefined" || $scope.newCard.title === "" || typeof $scope.newCard.desc === "undefined" || $scope.newCard.desc === "" );
   };
-
-  $scope.$watch('newCard.title', function() {
-    $scope.validateForm();
-  });
-
-  $scope.$watch('newCard.desc', function() {
-    $scope.validateForm();
-  });
 
   $scope.reverseSorting = function() {
     // Horrible kludge to get sorting working for now

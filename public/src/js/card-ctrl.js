@@ -30,13 +30,31 @@ angular.module('cardApp', [])
 
       this.webSocket.onmessage = function(e) {
         // This whole mess is in need of clean up
+          
         var message = JSON.parse(e.data);
-        if(message.code === "PL") {
-          angular.element('[data-ng-controller=cardController]').scope().parsedJSON = message.data;
-          angular.element('[data-ng-controller=cardController]').scope().$apply();
+        switch (message.code) {
+          case "LS":
+            angular.element('[data-ng-controller=cardController]').scope().parsedJSON = message.data;
+            break;
+          case "MK":
+            angular.element('[data-ng-controller=cardController]').scope().parsedJSON.cards.push(message.data);
+            break;
+          case "RM":
+            var cards = angular.element('[data-ng-controller=cardController]').scope().parsedJSON;
+            var card = cards.cards.find(function(c) {
+                return c.title.toLowerCase() === message.data.title.toLowerCase();
+            });
+            var index = cards.cards.indexOf(card);
+            cards.cards.splice(index, 1);
+            break;
+          case "HB":
+            break;
+          default:
+            break;
         }
+        angular.element('[data-ng-controller=cardController]').scope().$apply();
       };
-      
+
       this.webSocket.onclose = function(e) {
         console.log("Connection closed.");
         webSocketService.connected = false;
@@ -56,12 +74,10 @@ angular.module('cardApp', [])
     }
   };
 
-  this.sendData = function(data){
-    data.cards.forEach(function(card){
-      delete card.$$hashKey;
-    });
+  this.sendData = function(code, data){
+    delete data.$$hashKey;
     this.webSocket.send(JSON.stringify({
-      code: "PL",
+      code: code,
       data: data
     }));
   };
@@ -110,7 +126,7 @@ angular.module('cardApp', [])
       var cardToAdd = {"title": $scope.newCard.title, "desc": $scope.newCard.desc, "tags": tags};
       $scope.parsedJSON.cards.push(cardToAdd);
 
-      WebSocketService.sendData($scope.parsedJSON);
+      WebSocketService.sendData("MK", $scope.newCard);
 
       $('#add-card-modal').modal('hide');
 
@@ -124,7 +140,7 @@ angular.module('cardApp', [])
     var index = $scope.parsedJSON.cards.indexOf(card);
     $scope.parsedJSON.cards.splice(index, 1);
 
-    WebSocketService.sendData($scope.parsedJSON);
+    WebSocketService.sendData("RM", card);
   };
 
   $scope.validateForm = function() {

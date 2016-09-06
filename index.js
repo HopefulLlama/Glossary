@@ -32,13 +32,31 @@ app.get(route, function (req, res) {
 winston.info('WebSocketServer wss created');
 
 var cards = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
+var getCards = function() {
+  return JSON.parse(fs.readFileSync(dataFile, 'utf8'));
+};
+var writeCards = function(cards, successCallback, errorCallback) {
+  fs.writeFile(dataFile, JSON.stringify(cards), function(err) {
+    if(err) {
+      console.log(err);
+      if(typeof errorCallback === "function") {
+        errorCallback();
+      }
+    } else {
+      console.log("JSON saved to " + dataFile);
+      if(typeof successCallback === "function") {
+        successCallback();
+      }
+    }
+  });
+};
 
 var wss = new WebSocketServer({server: server});
-wss.broadcast = function(data, ws) {
+wss.broadcast = function(code, data, ws) {
   for (var i in this.clients) {
     if (this.clients[i] !== ws) {
       this.clients[i].send(JSON.stringify({
-        code: "PL",
+        code: code,
         data: data
       }));
     }
@@ -53,22 +71,39 @@ wss.on('connection', function(ws) {
   ws.on('message', function(payload) {
     winston.info(payload);
     data = JSON.parse(payload);
-    if(data.code === "PL") {
-      var input = JSON.stringify(data.data);
-      fs.writeFile(dataFile, input, function(err) {
-        if(err) {
-          console.log(err);
-        } else {
-          console.log("JSON saved to " + dataFile);
-        }
 
-        wss.broadcast(data, ws);
-      }); 
-    } else if (data.code === "HB") {
-      ws.send(JSON.stringify({
-        code: "HB",
-        data: "pong"
-      }));
+    var cards = getCards();
+    switch(data.code) {
+      case "LS":
+        ws.send(JSON.stringify({
+          code: "LS",
+          data: cards
+        }));
+        break;
+      case "MK":
+        cards.cards.push(data.data);
+        writeCards(cards, function() {
+          wss.broadcast("MK", data.data, ws);
+        });
+        break;
+      case "RM":
+        var card = cards.cards.find(function(c) {
+          return c.title.toLowerCase() === data.data.title.toLowerCase();
+        });
+        var index = cards.cards.indexOf(card);
+        cards.cards.splice(index, 1);
+        writeCards(cards, function() {
+          wss.broadcast("RM", data.data, ws);
+        });
+        break;
+      case "HB":
+        ws.send(JSON.stringify({
+          code: "HB",
+          data: "pong"
+        }));
+        break;
+      default:
+        break;
     }
   });
 
@@ -77,13 +112,14 @@ wss.on('connection', function(ws) {
     clients.splice(clients.indexOf(ws), 1);
     winston.info({connections: clients.length});
   });
+
   ws.send(JSON.stringify({
-    code: "PL",
+    code: "LS",
     data: JSON.parse(fs.readFileSync(dataFile, 'utf8'))
   }));
   clients.push(ws);
+  
   winston.info({connections: clients.length});
-
 });
 
 server.listen(port, function() {

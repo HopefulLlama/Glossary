@@ -5,7 +5,6 @@ html
     script(type='text/javascript', src='./lib/jquery-2.1.1.min.js')
     script(type='text/javascript', src='./lib/bootstrap-3.3.0-dist/js/bootstrap.min.js')
     script(type='text/javascript', src='./lib/angular.min.js')
-    script(type='text/javascript', src='./lib/masonry.pkgd.min.js')
 
     link(rel='stylesheet', href='./lib/bootstrap-3.3.0-dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='./lib/bootstrap-3.3.0-dist/css/bootstrap-theme.min.css')
@@ -69,6 +68,6 @@ html
             img(id="disconnection-image", src="./assets/img/disconnected.png")
             span Disconnected
     .container
-        div(class="row masonry", id="masonry-container")
-          div(data-ng-if="showCards", class='masonry-element col-xs-12 col-sm-6 col-md-4', data-ng-repeat="card in parsedJSON.cards | filter: filterCriteria | orderBy:sorting.predicate:sorting.reverse")
+        div(class="row")
+          div(data-ng-if="showCards", class='col-xs-12 col-sm-6 col-md-4', data-ng-repeat="card in parsedJSON.cards | filter: filterCriteria | orderBy:sorting.predicate:sorting.reverse")
             card(details="card", remove-card="removeCard", connected="WebSocketService.connected")

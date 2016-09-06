@@ -1,6 +1,5 @@
 angular.module('cardApp', [])
 .service('WebSocketService', ["$interval", function($interval) {
-  this.masonry = null;
   this.host = location.origin.replace(/^http/, 'ws');
 
   this.connected = false;
@@ -35,13 +34,6 @@ angular.module('cardApp', [])
         if(message.code === "PL") {
           angular.element('[data-ng-controller=cardController]').scope().parsedJSON = message.data;
           angular.element('[data-ng-controller=cardController]').scope().$apply();
-          var container = document.querySelector('#masonry-container');
-          webSocketService.masonry = new Masonry( container, {
-            // options
-            itemSelector: '.masonry-element'
-          });
-          webSocketService.masonry.reloadItems();
-          webSocketService.masonry.layout();
         }
       };
       
@@ -71,9 +63,7 @@ angular.module('cardApp', [])
     this.webSocket.send(JSON.stringify({
       code: "PL",
       data: data
-    }));  
-    this.masonry.reloadItems();
-    this.masonry.layout();
+    }));
   };
 
   this.cleanup = function() {
